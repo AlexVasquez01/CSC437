@@ -1,0 +1,14 @@
+{
+  "name": "csc437",
+  "version": "1.0.0",
+  "description": "labs and projects for CSC 437",
+  "main": "index.js",
+  "workspaces": [
+        "packages/*"
+    ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
