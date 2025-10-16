@@ -4,11 +4,12 @@ html, body {
 }
 
 html {
-  font-size: var(--font-size-base);
+  font-size: var(--size-base);
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
+  font-weight: var(--weight-regular);
   color: var(--color-text);
   background: var(--color-background-page);
   line-height: 1.5;
@@ -20,13 +21,18 @@ header {
   padding: var(--space-3) var(--space-2);
 }
 
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+}
+
 h1 {
+  font-size: var(--size-h1);
   margin: 0;
-  font-size: var(--font-size-h1);
 }
 
 h2 {
-  font-size: var(--font-size-h2);
+  font-size: var(--size-h2);
   color: var(--color-accent);
   margin-top: var(--space-3);
   margin-bottom: var(--space-1);
@@ -95,3 +101,18 @@ th {
 tr:last-child td {
   border-bottom: none;
 }
+
+small, .muted {
+  font-size: var(--size-small);
+  color: var(--color-muted);
+}
+
+svg.icon {
+  display: inline;
+  height: 1.5em;
+  width: 1.5em;
+  vertical-align: -0.25em;
+  fill: currentColor;
+  margin-right: 0.35em;
+}
+
