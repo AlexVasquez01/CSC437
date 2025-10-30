@@ -32,4 +32,16 @@
   --space-1: 0.5rem;
   --space-2: 1rem;
   --space-3: 1.5rem;
+
+  body.dark-mode {
+  --color-background-page: #0f172a;
+  --color-background-header: #020617;
+  --color-surface: #0f172a;
+  --color-text: #e2e8f0;
+  --color-text-inverted: #ffffff;
+  --color-muted: #94a3b8;
+  --color-border: #1e293b;
+  --color-accent: #38bdf8;
+  --color-accent-hover: #0ea5e9;
+  }
 }
