@@ -68,15 +68,7 @@
 
     <section class="span-6">
       <h2>Teams</h2>
-      <div class="team-list">
-        <ff-team-card
-          name="Team Vasquez"
-          manager="Alex Vasquez"
-          record="1-0"
-        >
-          <span>Projected: 128.4</span>
-        </ff-team-card>
-      </div>
+      <ff-team-list src="/data/teams.json"></ff-team-list>
     </section>
 
     <section class="span-12">
@@ -93,10 +85,12 @@
   <script type="module">
     import { define } from "@calpoly/mustang";
     import { FfTeamCardElement } from "/src/ff-team-card.js";
+    import { FfTeamListElement } from "/src/ff-team-list.js";
 
     define({
-      "ff-team-card": FfTeamCardElement
+      "ff-team-card": FfTeamCardElement,
+      "ff-team-list": FfTeamListElement
     });
-  </script>
+</script>
 </body>
 </html>

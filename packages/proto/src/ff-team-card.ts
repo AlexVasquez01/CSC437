@@ -21,24 +21,19 @@ export class FfTeamCardElement extends LitElement {
   icon: "helmet" | "football" | "" = "helmet";
 
   override render() {
-    const title = this.teamName || this.name || "Fantasy team";
-
     return html`
       <article class="card">
         <header class="card-header">
           ${this.renderIcon()}
-          <div class="title-block">
-            <a class="team-link" href=${this.href}>${title}</a>
-            ${this.manager
-              ? html`<p class="manager">${this.manager}</p>`
-              : null}
+          <div class="title">
+            <a href=${this.href}>${this.teamName}</a>
+            <p class="manager">${this.manager}</p>
           </div>
-          ${this.record
-            ? html`<p class="record">${this.record}</p>`
-            : null}
+          <p class="record">${this.record}</p>
         </header>
-        <div class="card-body">
-          <slot>Projected: —</slot>
+        <div class="body">
+          <slot name="projection"></slot>
+          <slot></slot>
         </div>
       </article>
     `;

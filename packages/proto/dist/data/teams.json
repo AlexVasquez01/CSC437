@@ -1,0 +1,26 @@
+[
+  {
+    "teamName": "Team Vasquez",
+    "manager": "Alex Vasquez",
+    "record": "1-0",
+    "href": "/team.html",
+    "projection": "Projected: 128.4",
+    "icon": "helmet"
+  },
+  {
+    "teamName": "CPU Team 1",
+    "manager": "CPU #1",
+    "record": "0-1",
+    "href": "/team.html",
+    "projection": "Projected: 111.2",
+    "icon": "football"
+  },
+  {
+    "teamName": "CPU Team 2",
+    "manager": "CPU #2",
+    "record": "0-1",
+    "href": "/team.html",
+    "projection": "Projected: 104.6",
+    "icon": "helmet"
+  }
+]
