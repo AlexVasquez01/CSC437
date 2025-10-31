@@ -115,3 +115,13 @@ svg.icon {
   fill: currentColor;
   margin-right: 0.35em;
 }
+
+.team-list {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.team-list ff-team-card {
+  flex: 1 1 280px;
+}
