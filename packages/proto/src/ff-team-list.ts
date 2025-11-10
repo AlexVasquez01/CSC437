@@ -1,8 +1,10 @@
 import { LitElement, html, css } from "lit";
 import { property, state } from "lit/decorators.js";
+import { Auth, Observer } from "@calpoly/mustang";
 
 type TeamData = {
-  teamName: string;
+  id: string;
+  name: string;
   manager: string;
   record: string;
   href?: string;
@@ -16,15 +18,39 @@ export class FfTeamListElement extends LitElement {
 
   @state()
   teams: Array<TeamData> = [];
+  private _authObserver = new Observer<Auth.Model>(this, "ff:auth");
+  private _user?: Auth.User;
 
   connectedCallback() {
     super.connectedCallback();
-    if (this.src) this.hydrate(this.src);
+    this._authObserver.observe((auth: Auth.Model) => {
+      this._user = auth.user;
+      if (this.src && this._user?.authenticated) {
+        this.hydrate(this.src);
+      }
+    });
+  }
+
+  get authorization() {
+    return (
+      this._user?.authenticated && {
+        Authorization: `Bearer ${
+          (this._user as Auth.AuthenticatedUser).token
+        }`,
+      }
+    );
   }
 
   private hydrate(src: string) {
-    fetch(src)
-      .then((res) => res.json())
+    const headers = this.authorization || undefined;
+
+    fetch(src, { headers })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Fetch failed: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((json: unknown) => {
         if (Array.isArray(json)) {
           this.teams = json as Array<TeamData>;
@@ -44,7 +70,7 @@ export class FfTeamListElement extends LitElement {
         ${this.teams.map(
           (team) => html`
             <ff-team-card
-              team-name=${team.teamName}
+              team-name=${team.name}
               manager=${team.manager}
               record=${team.record}
               href=${team.href ?? "/team.html"}

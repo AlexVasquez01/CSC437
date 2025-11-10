@@ -7,7 +7,10 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,600;1,14..32,400&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,600;1,14..32,400&family=Roboto+Slab:wght@700&display=swap"
+    rel="stylesheet"
+  >
 
   <link rel="stylesheet" href="/styles/reset.css">
   <link rel="stylesheet" href="/styles/tokens.css">
@@ -16,81 +19,65 @@
 </head>
 
 <body>
-  <header class="site-header">
-    <div class="site-brand">
-      <svg class="icon"><use href="/icons/fantasy.svg#icon-helmet" /></svg>
-      AV Fantasy
-    </div>
-    <div class="spacer"></div>
-    <nav class="site-nav" aria-label="Primary">
-      <a href="index.html">League</a>
-      <a href="team.html">Teams</a>
-      <a href="matchup.html">Matchups</a>
-      <a href="scoring_rules.html">Scoring</a>
-    </nav>
+  <mu-auth provides="ff:auth">
+    <ff-header-auth></ff-header-auth>
 
-    <div class="site-actions">
-    <label class="mode-toggle">
-      <input id="darkmode-toggle" type="checkbox" autocomplete="off" />
-      Dark mode
-    </label>
-    <div class="site-user">
-      <svg class="icon"><use href="/icons/fantasy.svg#icon-helmet" /></svg>
-      Alex
-    </div>
-  </div>
-</header>
+    <main class="page-grid">
+      <section class="span-4">
+        <h2>Basics</h2>
+        <dl>
+          <dt>Format</dt><dd>Head-to-head</dd>
+          <dt>Teams</dt><dd>12</dd>
+          <dt>Season</dt><dd>2025</dd>
+        </dl>
+      </section>
 
-  <main class="page-grid">
-    <section class="span-4">
-      <h2>Basics</h2>
-      <dl>
-        <dt>Format</dt><dd>Head-to-head</dd>
-        <dt>Teams</dt><dd>12</dd>
-        <dt>Season</dt><dd>2025</dd>
-      </dl>
-    </section>
+      <section class="span-8">
+        <h2>Scoring</h2>
+        <p><a href="scoring_rules.html">PPR Standard</a></p>
+      </section>
 
-    <section class="span-8">
-      <h2>Scoring</h2>
-      <p><a href="scoring_rules.html">PPR Standard</a></p>
-    </section>
+      <section class="span-6">
+        <h2>
+          <svg class="icon"><use href="/icons/fantasy.svg#icon-helmet"></use></svg>
+          Teams
+        </h2>
+        <ul>
+          <li><a href="team.html">Team Vasquez</a></li>
+        </ul>
+      </section>
 
-    <section class="span-6">
-      <h2>
-        <svg class="icon"><use href="/icons/fantasy.svg#icon-helmet" /></svg>
-        Teams
-      </h2>
-      <ul>
-        <li><a href="team.html">Team Vasquez</a></li>
-      </ul>
-    </section>
+      <section class="span-6">
+        <h2>Managers</h2>
+        <ul>
+          <li><a href="manager.html">Alex Vasquez</a></li>
+        </ul>
+      </section>
 
-    <section class="span-6">
-      <h2>Teams</h2>
-      <ff-team-list src="/data/teams.json"></ff-team-list>
-    </section>
-
-    <section class="span-12">
-      <h2>
-        <svg class="icon"><use href="/icons/fantasy.svg#icon-football" /></svg>
-        Matchups
-      </h2>
-      <ul>
-        <li><a href="matchup.html">Week 1: Vasquez vs Bot</a></li>
-      </ul>
-    </section>
-  </main>
+      <section class="span-12">
+        <h2>
+          <svg class="icon"><use href="/icons/fantasy.svg#icon-football"></use></svg>
+          Matchups
+        </h2>
+        <ul>
+          <li><a href="matchup.html">Week 1: Vasquez vs Bot</a></li>
+        </ul>
+      </section>
+    </main>
+  </mu-auth>
   <script type="module" src="/scripts/darkmode.js"></script>
   <script type="module">
-    import { define } from "@calpoly/mustang";
+    import { define, Auth } from "@calpoly/mustang";
+    import { HeaderAuthElement } from "/src/header-auth.js";
     import { FfTeamCardElement } from "/src/ff-team-card.js";
     import { FfTeamListElement } from "/src/ff-team-list.js";
 
     define({
+      "mu-auth": Auth.Provider,
+      "ff-header-auth": HeaderAuthElement,
       "ff-team-card": FfTeamCardElement,
       "ff-team-list": FfTeamListElement
     });
-</script>
+  </script>
 </body>
 </html>

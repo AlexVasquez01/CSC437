@@ -13,7 +13,8 @@ export default defineConfig({
         team: resolve(__dirname, "public/team.html"),
         matchup: resolve(__dirname, "public/matchup.html"),
         player: resolve(__dirname, "public/player.html"),
-        scoring: resolve(__dirname, "public/scoring_rules.html")
+        scoring: resolve(__dirname, "public/scoring_rules.html"),
+        login: resolve(__dirname, "login.html")
       }
     }
   }
