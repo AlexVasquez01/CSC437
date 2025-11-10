@@ -1,3 +1,4 @@
 # Node modules (do not commit)
 node_modules/
-
+.env
+dist/
