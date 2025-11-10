@@ -1,5 +1,5 @@
 export interface Team {
-  teamid: string;      // unique key
+  id: string;      // unique key
   name: string;        // "Team Vasquez"
   manager: string;     // "Alex Vasquez"
   record: string;      // "1-0"

@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { connect } from "./services/mongo";
 import Teams from "./services/team-svc";
+import teams from "./routes/teams";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,6 +10,8 @@ const staticDir = process.env.STATIC || "public";
 connect("fantasyfootball");
 
 app.use(express.static(staticDir));
+app.use(express.json());
+app.use("/api/teams", teams);
 
 // test
 app.get("/hello", (req: Request, res: Response) => {
