@@ -1,15 +1,19 @@
 import { css, html, LitElement } from "lit";
 
 export class AboutViewElement extends LitElement {
+  createRenderRoot() {
+    return this;
+  }
+
   override render() {
     return html`
       <main class="page-grid">
         <section class="span-8">
           <h2>About This League</h2>
           <p>
-            This is my Fantasy Football single page app. The header, auth state,
-            and league data all live on one page, and navigation between
-            views happens without full page reloads.
+            This is my Fantasy Football single page app. The header, auth
+            state, and league data all live on one page, and navigation
+            between views happens without full page reloads.
           </p>
           <p>
             Try going back to the home view:

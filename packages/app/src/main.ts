@@ -1,8 +1,9 @@
 import {
   Auth,
-  define,
   History,
-  Switch
+  Switch,
+  Store,
+  define
 } from "@calpoly/mustang";
 import { html } from "lit";
 
@@ -11,8 +12,17 @@ import { FfTeamCardElement } from "./components/ff-team-card";
 import { FfTeamListElement } from "./components/ff-team-list";
 import { HomeViewElement } from "./views/home-view";
 import { AboutViewElement } from "./views/about-view";
+import { TeamsViewElement } from "./views/teams-view";
+
+import { Model, init } from "./model";
+import { Msg } from "./messages";
+import update from "./update";
 
 const routes: Switch.Route[] = [
+  {
+    path: "/app/teams",
+    view: () => html`<ff-teams-view></ff-teams-view>`
+  },
   {
     path: "/app/about",
     view: () => html`<ff-about-view></ff-about-view>`
@@ -31,17 +41,25 @@ class AppSwitch extends Switch.Element {
   constructor() {
     super(routes, "ff:history", "ff:auth");
   }
-
 }
+
+class AppStore extends Store.Provider<Model, Msg> {
+  constructor() {
+    super(update, init, "ff:auth");
+  }
+}
+
 define({
   "mu-auth": Auth.Provider,
   "mu-history": History.Provider,
   "mu-switch": AppSwitch,
+  "mu-store": AppStore,
 
   "ff-header-auth": HeaderAuthElement,
   "ff-team-card": FfTeamCardElement,
   "ff-team-list": FfTeamListElement,
 
   "ff-home-view": HomeViewElement,
-  "ff-about-view": AboutViewElement
+  "ff-about-view": AboutViewElement,
+  "ff-teams-view": TeamsViewElement
 });

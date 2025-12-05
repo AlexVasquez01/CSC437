@@ -6,9 +6,6 @@ export class FfTeamCardElement extends LitElement {
   teamName = "";
 
   @property()
-  name = "";
-
-  @property()
   manager = "";
 
   @property()
@@ -25,13 +22,13 @@ export class FfTeamCardElement extends LitElement {
       <article class="card">
         <header class="card-header">
           ${this.renderIcon()}
-          <div class="title">
-            <a href=${this.href}>${this.teamName}</a>
+          <div class="title-block">
+            <a class="team-link" href=${this.href}>${this.teamName}</a>
             <p class="manager">${this.manager}</p>
           </div>
           <p class="record">${this.record}</p>
         </header>
-        <div class="body">
+        <div class="card-body">
           <slot name="projection"></slot>
           <slot></slot>
         </div>

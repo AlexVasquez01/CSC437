@@ -45,9 +45,7 @@ export class HeaderAuthElement extends LitElement {
   }
 
   private renderSignInLink() {
-    return html`
-      <a class="signin-link" href="/login.html">Sign In…</a>
-    `;
+    return html`<a class="signin-link" href="/login.html">Sign In…</a>`;
   }
 
   override render() {
@@ -63,11 +61,10 @@ export class HeaderAuthElement extends LitElement {
         <div class="spacer"></div>
 
         <nav class="site-nav" aria-label="Primary">
-          <!-- use same hrefs as your other pages -->
-          <a href="index.html">League</a>
-          <a href="team.html">Teams</a>
-          <a href="matchup.html">Matchups</a>
-          <a href="scoring_rules.html">Scoring</a>
+          <a href="/app">League</a>
+          <a href="/app/teams">Teams</a>
+          <a href="/matchup.html">Matchups</a>
+          <a href="/scoring_rules.html">Scoring</a>
         </nav>
 
         <div class="site-actions">
@@ -81,12 +78,10 @@ export class HeaderAuthElement extends LitElement {
               <use href="/icons/fantasy.svg#icon-helmet"></use>
             </svg>
 
-            <!-- text where "Alex" used to be -->
             <span class="username">
               ${this.loggedIn ? this.userid : "Guest"}
             </span>
 
-            <!-- show either Sign Out button or Sign In link -->
             ${this.loggedIn
               ? this.renderSignOutButton()
               : this.renderSignInLink()}

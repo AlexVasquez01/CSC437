@@ -21,13 +21,15 @@
 <body>
   <mu-history provides="ff:history">
     <mu-auth provides="ff:auth" redirect="/login.html">
-      <article class="page">
-        <ff-header-auth></ff-header-auth>
-        <mu-switch></mu-switch>
-      </article>
+      <mu-store provides="ff:model">
+        <article class="page">
+          <ff-header-auth></ff-header-auth>
+          <mu-switch></mu-switch>
+        </article>
+      </mu-store>
     </mu-auth>
   </mu-history>
-
   <script type="module" src="/src/main.ts"></script>
+  <script type="module" src="/scripts/darkmode.js"></script>
 </body>
 </html>

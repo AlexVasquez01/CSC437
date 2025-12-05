@@ -36,7 +36,7 @@ export class FfTeamListElement extends LitElement {
       this._user?.authenticated && {
         Authorization: `Bearer ${
           (this._user as Auth.AuthenticatedUser).token
-        }`,
+        }`
       }
     );
   }
@@ -73,7 +73,7 @@ export class FfTeamListElement extends LitElement {
               team-name=${team.name}
               manager=${team.manager}
               record=${team.record}
-              href=${team.href ?? "/team.html"}
+              href=${team.href ?? "/app/teams"}
               icon=${team.icon ?? "helmet"}
             >
               ${team.projection
