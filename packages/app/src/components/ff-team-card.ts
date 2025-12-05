@@ -1,47 +1,58 @@
 import { LitElement, html, css } from "lit";
 import { property } from "lit/decorators.js";
+import type { Team } from "server/models";
 
 export class FfTeamCardElement extends LitElement {
-  @property({ attribute: "team-name" })
-  teamName = "";
+  @property({ type: Object })
+  team?: Team;
 
-  @property()
-  manager = "";
-
-  @property()
-  record = "";
-
-  @property()
-  href = "/team.html";
-
-  @property()
-  icon: "helmet" | "football" | "" = "helmet";
+  private get teamId(): string | undefined {
+    const t: any = this.team;
+    return t?._id ?? t?.id;
+  }
 
   override render() {
+    const t: any = this.team ?? {};
+    const name = t.name ?? "(no name)";
+    const manager = t.manager ?? "";
+    const record = t.record ?? "";
+    const projection: number | undefined = t.projection;
+    const id = this.teamId;
+
     return html`
       <article class="card">
         <header class="card-header">
           ${this.renderIcon()}
           <div class="title-block">
-            <a class="team-link" href=${this.href}>${this.teamName}</a>
-            <p class="manager">${this.manager}</p>
+            <div class="team-name">${name}</div>
+            <p class="manager">${manager}</p>
           </div>
-          <p class="record">${this.record}</p>
+          <p class="record">${record}</p>
         </header>
         <div class="card-body">
-          <slot name="projection"></slot>
+          <div class="projection">
+            ${projection != null
+              ? html`Projected: ${projection.toFixed(1)} pts`
+              : html`Projected: —`}
+          </div>
           <slot></slot>
+
+          ${id
+            ? html`
+                <a class="edit-link" href=${`/app/teams/${id}/edit`}>
+                  Edit team
+                </a>
+              `
+            : null}
         </div>
       </article>
     `;
   }
 
   private renderIcon() {
-    const id =
-      this.icon === "football" ? "icon-football" : "icon-helmet";
     return html`
       <svg class="icon">
-        <use href=${`/icons/fantasy.svg#${id}`}></use>
+        <use href="/icons/fantasy.svg#icon-helmet"></use>
       </svg>
     `;
   }
@@ -79,14 +90,8 @@ export class FfTeamCardElement extends LitElement {
       gap: 0.2rem;
     }
 
-    .team-link {
+    .team-name {
       font-weight: 600;
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .team-link:hover {
-      text-decoration: underline;
     }
 
     .manager {
@@ -104,6 +109,15 @@ export class FfTeamCardElement extends LitElement {
       font-size: 0.85rem;
       color: var(--color-text);
       margin-top: 0.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .edit-link {
+      font-size: 0.8rem;
+      text-decoration: underline;
+      align-self: flex-start;
     }
   `;
 }

@@ -1,23 +1,14 @@
 import { LitElement, html, css } from "lit";
 import { property, state } from "lit/decorators.js";
 import { Auth, Observer } from "@calpoly/mustang";
-
-type TeamData = {
-  id: string;
-  name: string;
-  manager: string;
-  record: string;
-  href?: string;
-  projection?: string;
-  icon?: "helmet" | "football" | "";
-};
+import type { Team } from "server/models";
 
 export class FfTeamListElement extends LitElement {
   @property()
   src?: string;
 
   @state()
-  teams: Array<TeamData> = [];
+  teams: Team[] = [];
   private _authObserver = new Observer<Auth.Model>(this, "ff:auth");
   private _user?: Auth.User;
 
@@ -53,7 +44,7 @@ export class FfTeamListElement extends LitElement {
       })
       .then((json: unknown) => {
         if (Array.isArray(json)) {
-          this.teams = json as Array<TeamData>;
+          this.teams = json as Team[];
         } else {
           this.teams = [];
         }
@@ -69,17 +60,7 @@ export class FfTeamListElement extends LitElement {
       <div class="team-list">
         ${this.teams.map(
           (team) => html`
-            <ff-team-card
-              team-name=${team.name}
-              manager=${team.manager}
-              record=${team.record}
-              href=${team.href ?? "/app/teams"}
-              icon=${team.icon ?? "helmet"}
-            >
-              ${team.projection
-                ? html`<span slot="projection">${team.projection}</span>`
-                : html`<span slot="projection">Projected: —</span>`}
-            </ff-team-card>
+            <ff-team-card .team=${team}></ff-team-card>
           `
         )}
       </div>

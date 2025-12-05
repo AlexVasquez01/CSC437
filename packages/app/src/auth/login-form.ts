@@ -27,23 +27,6 @@ export class LoginFormElement extends LitElement {
     );
   }
 
-  override render() {
-    return html`
-      <form
-        @change=${(e: InputEvent) => this.handleChange(e)}
-        @submit=${(e: SubmitEvent) => this.handleSubmit(e)}
-      >
-        <slot></slot>
-        <slot name="button">
-          <button ?disabled=${!this.canSubmit} type="submit">
-            Login
-          </button>
-        </slot>
-        <p class="error">${this.error}</p>
-      </form>
-    `;
-  }
-
   static styles = css`
     form {
       display: flex;
@@ -61,8 +44,6 @@ export class LoginFormElement extends LitElement {
       padding: 0.5rem 0.75rem;
       border-radius: var(--radius);
       border: 1px solid var(--color-border);
-      background: var(--color-surface);
-      color: var(--color-text);
     }
 
     button {
@@ -72,7 +53,6 @@ export class LoginFormElement extends LitElement {
       background: var(--color-accent);
       color: var(--color-text-inverted);
       cursor: pointer;
-      font-weight: 600;
     }
 
     button:disabled {
@@ -84,9 +64,27 @@ export class LoginFormElement extends LitElement {
       color: var(--color-error, red);
       border: 1px solid var(--color-error, red);
       padding: 0.5rem;
-      margin-top: 0.5rem;
     }
   `;
+
+  override render() {
+    return html`
+      <form
+        @change=${(e: InputEvent) => this.handleChange(e)}
+        @submit=${(e: SubmitEvent) => this.handleSubmit(e)}
+      >
+        <slot></slot>
+
+        <slot name="button">
+          <button ?disabled=${!this.canSubmit} type="submit">
+            Login
+          </button>
+        </slot>
+
+        <p class="error">${this.error}</p>
+      </form>
+    `;
+  }
 
   handleChange(event: InputEvent) {
     const target = event.target as HTMLInputElement;
@@ -118,7 +116,7 @@ export class LoginFormElement extends LitElement {
     })
       .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Login failed");
+          throw new Error(`Login failed (status ${res.status})`);
         }
         return res.json();
       })

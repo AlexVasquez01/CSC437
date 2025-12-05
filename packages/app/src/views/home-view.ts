@@ -15,7 +15,7 @@ export class HomeViewElement extends LitElement {
 
         <section class="span-8">
           <h2>Scoring</h2>
-          <p><a href="/scoring_rules.html">PPR Standard</a></p>
+          <p><a href="/app/scoring">PPR Standard</a></p>
         </section>
 
         <section class="span-6">

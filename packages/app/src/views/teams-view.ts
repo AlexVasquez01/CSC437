@@ -4,7 +4,7 @@ import { state } from "lit/decorators.js";
 
 import { Model } from "../model";
 import { Msg } from "../messages";
-import { Team } from "server/models";
+import type { Team } from "server/models";
 
 export class TeamsViewElement extends View<Model, Msg> {
   constructor() {
@@ -52,13 +52,7 @@ export class TeamsViewElement extends View<Model, Msg> {
             ${this.teams.map(
               (team) => html`
                 <li>
-                  <ff-team-card
-                    team-name=${team.name}
-                    manager=${team.manager}
-                    record=${team.record}
-                    href=${`/team.html?id=${team.id}`}
-                    icon="helmet"
-                  ></ff-team-card>
+                  <ff-team-card .team=${team}></ff-team-card>
                 </li>
               `
             )}

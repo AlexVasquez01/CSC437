@@ -45,7 +45,9 @@ export class HeaderAuthElement extends LitElement {
   }
 
   private renderSignInLink() {
-    return html`<a class="signin-link" href="/login.html">Sign In…</a>`;
+    return html`
+      <a class="signin-link" href="/login.html">Sign In…</a>
+    `;
   }
 
   override render() {
@@ -63,8 +65,8 @@ export class HeaderAuthElement extends LitElement {
         <nav class="site-nav" aria-label="Primary">
           <a href="/app">League</a>
           <a href="/app/teams">Teams</a>
-          <a href="/matchup.html">Matchups</a>
-          <a href="/scoring_rules.html">Scoring</a>
+          <a href="/app/matchups">Matchups</a>
+          <a href="/app/scoring">Scoring</a>
         </nav>
 
         <div class="site-actions">
