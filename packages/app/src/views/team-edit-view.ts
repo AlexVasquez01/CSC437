@@ -23,8 +23,8 @@ export class TeamEditViewElement extends View<Model, Msg> {
     if (!this.teamId) return undefined;
 
     const fromList =
-      this.model.teams?.find(
-        (t: any) => t._id === this.teamId || t.id === this.teamId
+      this.model.teams?.find((t: any) =>
+        t.id === this.teamId || t._id === this.teamId
       );
 
     return (fromList as Team | undefined) ?? this.model.team;
@@ -56,14 +56,21 @@ export class TeamEditViewElement extends View<Model, Msg> {
           >
             <label>
               <span>Team name</span>
-              <input name="name" .value=${team.name ?? ""} />
+              <input
+                name="name"
+                .value=${team.name ?? ""}
+              />
             </label>
 
             <label>
               <span>Manager</span>
-              <input name="manager" .value=${team.manager ?? ""} />
+              <input
+                name="manager"
+                .value=${team.manager ?? ""}
+              />
             </label>
 
+            <!-- mu-form will treat this like a normal submit button -->
             <button type="submit">Save changes</button>
           </mu-form>
         </section>
@@ -77,7 +84,7 @@ export class TeamEditViewElement extends View<Model, Msg> {
     this.dispatchMessage([
       "team/save",
       {
-        id: this.teamId,
+        id: this.teamId,         
         team: event.detail
       },
       {

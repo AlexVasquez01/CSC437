@@ -6,9 +6,9 @@ export class FfTeamCardElement extends LitElement {
   @property({ type: Object })
   team?: Team;
 
-  private get teamId(): string | undefined {
+  private get routeId(): string | undefined {
     const t: any = this.team;
-    return t?._id ?? t?.id;
+    return t?.id ?? t?._id;
   }
 
   override render() {
@@ -17,7 +17,7 @@ export class FfTeamCardElement extends LitElement {
     const manager = t.manager ?? "";
     const record = t.record ?? "";
     const projection: number | undefined = t.projection;
-    const id = this.teamId;
+    const id = this.routeId;
 
     return html`
       <article class="card">

@@ -9,20 +9,47 @@ interface NewUserData {
 
 export class NewUserFormElement extends LitElement {
   @state() form: NewUserData = {};
-  @property() api: string = "/auth/newuser";
+  @property() api: string = "/auth/register";
   @property() redirect: string = "/login.html";
   @state() error?: string;
 
   static styles = css`
-    form { display: flex; flex-direction: column; gap: 0.75rem; }
-    label { display: flex; flex-direction: column; gap: 0.25rem; }
-    input { padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc; }
-    button { padding: 0.5rem; border-radius: 6px; background: #1a73e8; color: white; }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    input {
+      padding: 0.5rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--color-border);
+    }
+    button {
+      padding: 0.5rem;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--color-accent);
+      color: var(--color-text-inverted);
+      cursor: pointer;
+    }
+    .error:not(:empty) {
+      color: var(--color-error, red);
+      border: 1px solid var(--color-error, red);
+      padding: 0.5rem;
+    }
   `;
 
-  render() {
+  override render() {
     return html`
-      <form @submit=${this.submit} @input=${this.updateField}>
+      <form
+        @input=${(e: Event) => this.updateField(e)}
+        @submit=${(e: SubmitEvent) => this.submit(e)}
+      >
         <slot></slot>
         <button type="submit">Create Account</button>
         <p class="error">${this.error ?? ""}</p>
@@ -51,10 +78,12 @@ export class NewUserFormElement extends LitElement {
         password: this.form.password
       })
     })
-      .then(res => {
+      .then((res) => {
         if (!res.ok) throw new Error("Account creation failed.");
         window.location.href = this.redirect;
       })
-      .catch(err => (this.error = err.message));
+      .catch((err: Error) => {
+        this.error = err.message;
+      });
   }
 }

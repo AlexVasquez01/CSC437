@@ -46,7 +46,7 @@ export class HeaderAuthElement extends LitElement {
 
   private renderSignInLink() {
     return html`
-      <a class="signin-link" href="/login.html">Sign In…</a>
+      <a href="/login.html" data-router-ignore>Sign In…</a>
     `;
   }
 

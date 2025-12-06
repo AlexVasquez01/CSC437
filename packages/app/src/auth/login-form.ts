@@ -1,4 +1,4 @@
-import { html, css, LitElement } from "lit";
+import { LitElement, html, css } from "lit";
 import { property, state } from "lit/decorators.js";
 
 interface LoginFormData {
@@ -7,17 +7,11 @@ interface LoginFormData {
 }
 
 export class LoginFormElement extends LitElement {
-  @state()
-  formData: LoginFormData = {};
+  @state() formData: LoginFormData = {};
 
-  @property()
-  api?: string;
-
-  @property()
-  redirect: string = "/app";
-
-  @state()
-  error?: string;
+  @property() api?: string;
+  @property() redirect: string = "/app";
+  @state() error?: string;
 
   get canSubmit(): boolean {
     return Boolean(
@@ -33,19 +27,16 @@ export class LoginFormElement extends LitElement {
       flex-direction: column;
       gap: 0.75rem;
     }
-
     label {
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
     }
-
     input {
       padding: 0.5rem 0.75rem;
       border-radius: var(--radius);
       border: 1px solid var(--color-border);
     }
-
     button {
       padding: 0.5rem 0.75rem;
       border-radius: var(--radius);
@@ -54,12 +45,10 @@ export class LoginFormElement extends LitElement {
       color: var(--color-text-inverted);
       cursor: pointer;
     }
-
     button:disabled {
       opacity: 0.5;
       cursor: default;
     }
-
     .error:not(:empty) {
       color: var(--color-error, red);
       border: 1px solid var(--color-error, red);
@@ -70,7 +59,7 @@ export class LoginFormElement extends LitElement {
   override render() {
     return html`
       <form
-        @change=${(e: InputEvent) => this.handleChange(e)}
+        @input=${(e: InputEvent) => this.handleChange(e)}
         @submit=${(e: SubmitEvent) => this.handleSubmit(e)}
       >
         <slot></slot>
@@ -81,37 +70,25 @@ export class LoginFormElement extends LitElement {
           </button>
         </slot>
 
-        <p class="error">${this.error}</p>
+        <p class="error">${this.error ?? ""}</p>
       </form>
     `;
   }
 
   handleChange(event: InputEvent) {
     const target = event.target as HTMLInputElement;
-    const name = target?.name;
+    const name = target?.name as "username" | "password";
     const value = target?.value;
-    const prevData = this.formData;
-
-    switch (name) {
-      case "username":
-        this.formData = { ...prevData, username: value };
-        break;
-      case "password":
-        this.formData = { ...prevData, password: value };
-        break;
-    }
+    this.formData = { ...this.formData, [name]: value };
   }
 
   handleSubmit(submitEvent: SubmitEvent) {
     submitEvent.preventDefault();
-
     if (!this.canSubmit) return;
 
     fetch(this.api || "", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(this.formData)
     })
       .then((res) => {

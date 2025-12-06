@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="/styles/tokens.css" />
     <link rel="stylesheet" href="/styles/page.css" />
     <link rel="stylesheet" href="/styles/layout.css" />
-
-    <script type="module" src="/src/login-main.ts"></script>
   </head>
   <body class="page">
     <mu-auth provides="ff:auth">
@@ -17,7 +15,7 @@
         <section class="span-6">
           <h2>Create an Account</h2>
           <section class="card">
-            <login-form api="/auth/register" redirect="/app">
+            <newuser-form api="/auth/register" redirect="/login.html">
               <label>
                 <span>Username:</span>
                 <input name="username" autocomplete="off" />
@@ -26,15 +24,11 @@
                 <span>Password:</span>
                 <input type="password" name="password" />
               </label>
-              <!-- confirm is optional; login-form ignores it -->
               <label>
                 <span>Confirm Password:</span>
                 <input type="password" name="confirm" />
               </label>
-              <span slot="button">
-                <button type="submit">Create Account</button>
-              </span>
-            </login-form>
+            </newuser-form>
           </section>
           <p>
             Already have an account?
@@ -43,5 +37,6 @@
         </section>
       </main>
     </mu-auth>
+    <script type="module" src="/src/login-main.ts"></script>
   </body>
 </html>

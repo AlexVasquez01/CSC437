@@ -1,51 +1,72 @@
 import express, { Request, Response } from "express";
-import { Team } from "../models/team";
+import type { Team } from "../models/team";
 import Teams from "../services/team-svc";
 
 const router = express.Router();
 
-// list all teams
-router.get("/", (_: Request, res: Response) => {
+router.get("/", (_req: Request, res: Response) => {
   Teams.index()
     .then((list: Team[]) => res.json(list))
-    .catch((err) => res.status(500).send(err));
+    .catch((err: Error) => {
+      console.error("Error listing teams:", err);
+      res.status(500).send("Failed to list teams");
+    });
 });
 
-// get one team
 router.get("/:id", (req: Request, res: Response) => {
   const { id } = req.params;
 
   Teams.get(id)
-    .then((team: Team) => res.json(team))
-    .catch((err) => res.status(404).send(err));
+    .then((team: Team | null) => {
+      if (!team) return res.status(404).send("Team not found");
+      res.json(team);
+    })
+    .catch((err: Error) => {
+      console.error(`Error loading team ${id}:`, err);
+      res.status(500).send("Failed to load team");
+    });
 });
 
-// create a team
+
 router.post("/", (req: Request, res: Response) => {
   const newTeam = req.body as Team;
 
   Teams.create(newTeam)
     .then((team: Team) => res.status(201).json(team))
-    .catch((err) => res.status(500).send(err));
+    .catch((err: Error) => {
+      console.error("Error creating team:", err);
+      res.status(500).send("Failed to create team");
+    });
 });
 
-// update a team
+
 router.put("/:id", (req: Request, res: Response) => {
   const { id } = req.params;
   const updatedTeam = req.body as Team;
 
   Teams.update(id, updatedTeam)
-    .then((team: Team) => res.json(team))
-    .catch((err) => res.status(404).send(err));
+    .then((team: Team | null) => {
+      if (!team) return res.status(404).send("Team not found");
+      res.json(team);
+    })
+    .catch((err: Error) => {
+      console.error(`Error updating team ${id}:`, err);
+      res.status(500).send("Failed to update team");
+    });
 });
 
-// remove a team
 router.delete("/:id", (req: Request, res: Response) => {
   const { id } = req.params;
 
   Teams.remove(id)
-    .then(() => res.status(204).end())
-    .catch((err) => res.status(404).send(err));
+    .then(() => {
+      res.status(204).end();
+    })
+    .catch((err: Error) => {
+      console.error(`Error deleting team ${id}:`, err);
+      res.status(500).send("Failed to delete team");
+    });
 });
+
 
 export default router;
