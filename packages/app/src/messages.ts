@@ -1,5 +1,9 @@
-import type { Message } from "@calpoly/mustang";
-import { Team } from "server/models";
+import type { Team } from "server/models";
+
+export type Reactions = {
+  onSuccess?: () => void;
+  onFailure?: (err: Error) => void;
+};
 
 export type Msg =
   | ["teams/request", {}]
@@ -11,6 +15,6 @@ export type Msg =
       {
         id: string;
         team: Partial<Team>;
-      },
-      Message.Reactions
+        reactions?: Reactions;
+      }
     ];

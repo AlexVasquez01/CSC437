@@ -19,7 +19,7 @@ import { MatchupsViewElement } from "./views/matchups-view";
 import { ScoringViewElement } from "./views/scoring-view";
 
 import { Model, init } from "./model";
-import { Msg } from "./messages";
+import type { Msg } from "./messages";
 import update from "./update";
 
 const routes: Switch.Route[] = [
@@ -62,7 +62,7 @@ class AppSwitch extends Switch.Element {
 
 class AppStore extends Store.Provider<Model, Msg> {
   constructor() {
-    super(update, init, "ff:auth");
+    super(update as any, init, "ff:auth");
   }
 }
 

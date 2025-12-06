@@ -56,21 +56,14 @@ export class TeamEditViewElement extends View<Model, Msg> {
           >
             <label>
               <span>Team name</span>
-              <input
-                name="name"
-                .value=${team.name ?? ""}
-              />
+              <input name="name" .value=${team.name ?? ""} />
             </label>
 
             <label>
               <span>Manager</span>
-              <input
-                name="manager"
-                .value=${team.manager ?? ""}
-              />
+              <input name="manager" .value=${team.manager ?? ""} />
             </label>
 
-            <!-- mu-form will treat this like a normal submit button -->
             <button type="submit">Save changes</button>
           </mu-form>
         </section>
@@ -84,16 +77,16 @@ export class TeamEditViewElement extends View<Model, Msg> {
     this.dispatchMessage([
       "team/save",
       {
-        id: this.teamId,         
-        team: event.detail
-      },
-      {
-        onSuccess: () =>
-          History.dispatch(this, "history/navigate", {
-            href: "/app/teams"
-          }),
-        onFailure: (err: Error) =>
-          console.error("Failed to save team:", err)
+        id: this.teamId,
+        team: event.detail,
+        reactions: {
+          onSuccess: () =>
+            History.dispatch(this, "history/navigate", {
+              href: "/app/teams"
+            }),
+          onFailure: (err: Error) =>
+            console.error("Failed to save team:", err)
+        }
       }
     ]);
   }

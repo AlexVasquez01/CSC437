@@ -1,18 +1,19 @@
-import { Auth, ThenUpdate, Message } from "@calpoly/mustang";
-import { Msg } from "./messages";
-import { Model } from "./model";
+import { Auth } from "@calpoly/mustang";
+import type { Msg, Reactions } from "./messages";
+import type { Model } from "./model";
 import type { Team } from "server/models";
 
 export default function update(
   message: Msg,
   model: Model,
   user: Auth.User
-): Model | ThenUpdate<Model, Msg> {
-  const [command, payload, callbacks] = message;
+): any {
+  const [command, payload] = message;
 
   switch (command) {
     case "teams/request": {
       if (model.teams) return model;
+
       return [
         model,
         requestTeams(user).then(
@@ -22,12 +23,13 @@ export default function update(
     }
 
     case "teams/load": {
-      const { teams } = payload;
+      const { teams } = payload as { teams: Team[] };
       return { ...model, teams };
     }
 
     case "team/request": {
-      const { id } = payload;
+      const { id } = payload as { id: string };
+
       const existing =
         model.teams?.find((t: any) => t._id === id || t.id === id) ??
         model.team;
@@ -38,14 +40,14 @@ export default function update(
 
       return [
         model,
-        requestTeam(payload, user).then(
+        requestTeam({ id }, user).then(
           (team) => ["team/load", { team }] as Msg
         )
       ];
     }
 
     case "team/load": {
-      const { team } = payload;
+      const { team } = payload as { team: Team };
       const teamId = (team as any)._id ?? (team as any).id;
 
       const updatedTeams = model.teams
@@ -59,8 +61,11 @@ export default function update(
     }
 
     case "team/save": {
-      const { id, team } = payload;
-      const reactions = callbacks as Message.Reactions | undefined;
+      const { id, team, reactions } = payload as {
+        id: string;
+        team: Partial<Team>;
+        reactions?: Reactions;
+      };
 
       return [
         model,
@@ -71,8 +76,8 @@ export default function update(
     }
 
     default: {
-      const unhandled: never = command;
-      throw new Error(`Unhandled message "${unhandled}"`);
+      // dropped the `never` trick so TS stops complaining
+      throw new Error(`Unhandled message "${command}"`);
     }
   }
 }
@@ -107,7 +112,7 @@ function requestTeam(
 function saveTeam(
   msg: { id: string; team: Team },
   user: Auth.User,
-  callbacks?: Message.Reactions
+  reactions?: Reactions
 ): Promise<Team> {
   return fetch(`/api/teams/${msg.id}`, {
     method: "PUT",
@@ -124,11 +129,11 @@ function saveTeam(
     })
     .then((json) => {
       const team = json as Team;
-      callbacks?.onSuccess?.();
+      reactions?.onSuccess?.();
       return team;
     })
     .catch((err) => {
-      callbacks?.onFailure?.(err);
+      reactions?.onFailure?.(err);
       throw err;
     });
 }
