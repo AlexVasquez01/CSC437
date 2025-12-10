@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Create Account – AV Fantasy</title>
+
+    <link rel="stylesheet" href="/styles/reset.css" />
+    <link rel="stylesheet" href="/styles/tokens.css" />
+    <link rel="stylesheet" href="/styles/page.css" />
+    <link rel="stylesheet" href="/styles/layout.css" />
+    <script type="module" crossorigin src="/assets/state-oyQc6TAy.js"></script>
+    <script type="module" crossorigin src="/assets/login-main-CfBIXQhk.js"></script>
+  </head>
+  <body class="page">
+    <mu-auth provides="ff:auth">
+      <main class="page-grid">
+        <section class="span-6">
+          <h2>Create an Account</h2>
+          <section class="card">
+            <newuser-form api="/auth/register" redirect="/login.html">
+              <label>
+                <span>Username:</span>
+                <input name="username" autocomplete="off" />
+              </label>
+              <label>
+                <span>Password:</span>
+                <input type="password" name="password" />
+              </label>
+              <label>
+                <span>Confirm Password:</span>
+                <input type="password" name="confirm" />
+              </label>
+            </newuser-form>
+          </section>
+          <p>
+            Already have an account?
+            <a href="/login.html">Back to login</a>.
+          </p>
+        </section>
+      </main>
+    </mu-auth>
+  </body>
+</html>
