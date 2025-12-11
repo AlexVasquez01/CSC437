@@ -22,4 +22,6 @@ nohup npm -w server run start:app &
 No environment variables or secrets are stored in GitHub.
 The .env file exists only on the VPS.
 
+In order to see the full features of the website, you must create an account and login. 
+
 Branch for Grading: main
