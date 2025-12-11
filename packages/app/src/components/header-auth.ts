@@ -46,8 +46,15 @@ export class HeaderAuthElement extends LitElement {
     `;
   }
 
+  private gotoLogin(e: Event) {
+    e.preventDefault();
+    window.location.assign("/login.html");
+  }
+
   private renderSignInLink() {
-    return html` <a href="/login.html" data-router-ignore>Sign In…</a> `;
+    return html`
+      <a href="/login.html" @click=${this.gotoLogin}>Sign In…</a>
+    `;
   }
 
   override render() {
