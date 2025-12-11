@@ -11,6 +11,19 @@ export class MatchupsViewElement extends LitElement {
       display: block;
     }
 
+    .week-label {
+      margin-bottom: var(--space-2);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .week-label .icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      flex: 0 0 auto;
+    }
+
     .matchups-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -33,6 +46,10 @@ export class MatchupsViewElement extends LitElement {
       font-weight: 600;
     }
 
+    .names {
+      text-align: right;
+    }
+
     .projections {
       display: flex;
       justify-content: space-between;
@@ -40,21 +57,13 @@ export class MatchupsViewElement extends LitElement {
       color: var(--color-muted);
     }
 
-    .week-label {
-      margin-bottom: var(--space-2);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .week-label .icon {
-      width: 1.5rem;
-      height: 1.5rem;
+    .empty {
+      font-size: 0.9rem;
+      color: var(--color-muted);
     }
   `;
 
   private _authObserver = new Observer<Auth.Model>(this, "ff:auth");
-  private _user?: Auth.User;
 
   @state()
   private teams: TeamWithProj[] = [];
@@ -63,43 +72,35 @@ export class MatchupsViewElement extends LitElement {
     super.connectedCallback();
 
     this._authObserver.observe((auth: Auth.Model) => {
-      this._user = auth.user;
-      if (this._user?.authenticated) {
-        this.loadTeams();
+      const user = auth.user;
+      if (user && user.authenticated && "token" in user) {
+        const headers: HeadersInit = {
+          Authorization: `Bearer ${user.token as string}`
+        };
+        this.loadTeams(headers);
       } else {
         this.teams = [];
       }
     });
   }
 
-  private get authorization() {
-    return (
-      this._user?.authenticated && {
-        Authorization: `Bearer ${
-          (this._user as Auth.AuthenticatedUser).token
-        }`
-      }
-    );
-  }
-
-  private loadTeams() {
-    const headers = this.authorization || undefined;
-
+  private loadTeams(headers: HeadersInit) {
     fetch("/api/teams", { headers })
-      .then((res) => (res.ok ? res.json() : []))
+      .then((res: Response) => (res.ok ? res.json() : Promise.reject(res)))
       .then((json: Team[]) => {
-        this.teams = (json ?? []).map((t) => ({
+        const list: Team[] = Array.isArray(json) ? json : [];
+        this.teams = list.map((t: Team) => ({
           ...t,
           projection: t.projection ?? 0
         }));
       })
-      .catch((err) => {
+      .catch((err: unknown) => {
         console.error("Failed to load teams for matchups", err);
         this.teams = [];
       });
   }
 
-  private get weeklyMatchups() {
+  private get weeklyMatchups(): [TeamWithProj, TeamWithProj][] {
     const sorted = [...this.teams].sort((a, b) =>
       a.name.localeCompare(b.name)
     );
@@ -123,24 +124,29 @@ export class MatchupsViewElement extends LitElement {
             <h2>Week 1 Matchups</h2>
           </div>
 
-          ${!pairs.length
-            ? html`<p>Sign in to view league matchups.</p>`
+          ${pairs.length === 0
+            ? html`<p class="empty">
+                No matchups to show yet. Add some teams or check that your
+                league is seeded.
+              </p>`
             : html`
                 <div class="matchups-grid">
-                  ${pairs.map(
-                    ([home, away], i) => html`
-                      <article class="matchup-card">
-                        <header class="teams">
-                          <span>Game ${i + 1}</span>
-                          <span>${home.name} vs ${away.name}</span>
-                        </header>
-                        <div class="projections">
-                          <span>${home.projection.toFixed(1)} pts</span>
-                          <span>${away.projection.toFixed(1)} pts</span>
+                  ${pairs.map(([home, away], i) => html`
+                    <article class="matchup-card">
+                      <header class="teams">
+                        <span>Game ${i + 1}</span>
+                        <div class="names">
+                          <div>${home.name}</div>
+                          <div>vs</div>
+                          <div>${away.name}</div>
                         </div>
-                      </article>
-                    `
-                  )}
+                      </header>
+                      <div class="projections">
+                        <span>${home.projection.toFixed(1)} pts</span>
+                        <span>${away.projection.toFixed(1)} pts</span>
+                      </div>
+                    </article>
+                  `)}
                 </div>
               `}
         </section>
