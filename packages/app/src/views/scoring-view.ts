@@ -6,6 +6,18 @@ export class ScoringViewElement extends LitElement {
       display: block;
     }
 
+    h1 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .icon {
+      width: 2rem;
+      height: 2rem;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -13,6 +25,7 @@ export class ScoringViewElement extends LitElement {
       border: 1px solid var(--color-border);
       border-radius: var(--radius);
       overflow: hidden;
+      font-size: 0.9rem;
     }
 
     th,
@@ -23,7 +36,9 @@ export class ScoringViewElement extends LitElement {
     }
 
     th {
-      background: #f1f5f9;
+      background: var(--color-surface-alt, var(--color-surface));
+      color: var(--color-text);
+      font-weight: 600;
     }
 
     tr:last-child td {

@@ -18,7 +18,8 @@ export class HomeViewElement extends LitElement {
           <p><a href="/app/scoring">PPR Standard</a></p>
         </section>
 
-        <section class="span-6">
+        <!-- Full-width Teams section to reduce whitespace and showcase cards -->
+        <section class="span-12">
           <h2>
             <svg class="icon">
               <use href="/icons/fantasy.svg#icon-helmet"></use>
@@ -28,7 +29,7 @@ export class HomeViewElement extends LitElement {
           <ff-team-list src="/api/teams"></ff-team-list>
         </section>
 
-        <section class="span-6">
+        <section class="span-12">
           <h2>More</h2>
           <ul>
             <li><a href="/app/about">About this league (SPA view)</a></li>
@@ -41,6 +42,13 @@ export class HomeViewElement extends LitElement {
   static styles = css`
     :host {
       display: block;
+    }
+
+    .icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      vertical-align: middle;
+      margin-right: 0.5rem;
     }
   `;
 }

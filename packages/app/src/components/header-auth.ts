@@ -23,7 +23,9 @@ export class HeaderAuthElement extends LitElement {
 
       if (user && user.authenticated) {
         this.loggedIn = true;
-        this.userid = user.username;
+        const anyUser = user as any;
+        this.userid =
+          anyUser.username ?? anyUser.sub ?? anyUser.name ?? "User";
       } else {
         this.loggedIn = false;
         this.userid = undefined;
@@ -45,9 +47,7 @@ export class HeaderAuthElement extends LitElement {
   }
 
   private renderSignInLink() {
-    return html`
-      <a href="/login.html" data-router-ignore>Sign In…</a>
-    `;
+    return html` <a href="/login.html" data-router-ignore>Sign In…</a> `;
   }
 
   override render() {
