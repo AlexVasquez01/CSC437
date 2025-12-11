@@ -1,5 +1,15 @@
 import mongoose, { Schema, model } from "mongoose";
-import type { Team } from "../models/team";
+import type { Team, Player } from "../models/team";
+
+const PlayerSchema = new Schema<Player>(
+  {
+    name: { type: String, required: true, trim: true },
+    position: { type: String, required: true, trim: true },
+    nflTeam: { type: String, required: true, trim: true },
+    projected: { type: Number, required: true }
+  },
+  { _id: false }
+);
 
 const TeamSchema = new Schema<Team>(
   {
@@ -8,10 +18,12 @@ const TeamSchema = new Schema<Team>(
     manager: { type: String, required: true, trim: true },
     record: { type: String, required: true, trim: true },
     projection: { type: Number },
-    avatar: { type: String }
+    avatar: { type: String },
+    roster: { type: [PlayerSchema], default: [] }
   },
   { collection: "ff_teams" }
 );
+
 
 const TeamModel = model<Team>("Team", TeamSchema);
 
